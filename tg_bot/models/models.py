@@ -8,11 +8,11 @@ class Users(Base):
     __tablename__ = "users"
 
     id = Column(Integer, primary_key=True)
-    username = Column(String)
-    name = Column(String)
-    # phone = Column(String)
-    # user_status = Column(String)
-    # is_admin = Column(Boolean, default=False)
+    name = Column(String, default=None)
+    fullname = Column(String, default=None)
+    phone = Column(String, default=None)
+    user_status = Column(String, default=None)
+    is_admin = Column(Boolean, default=False)
 
 
 # class UserStatus(Base):

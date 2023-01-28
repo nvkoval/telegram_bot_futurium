@@ -28,7 +28,7 @@ def save_user(user: Users):
     next_row = next_available_row(worksheet_users)
     if str(user.id) not in worksheet_users.col_values(1):
         worksheet_users.update_cell(next_row, 1, user.id)
-        worksheet_users.update_cell(next_row, 2, user.username)
+        worksheet_users.update_cell(next_row, 2, user.name)
     return
 
 

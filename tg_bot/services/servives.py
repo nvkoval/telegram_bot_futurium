@@ -17,7 +17,7 @@ def register_user(message):
 
 
 def select_user(user_id):
-    user = session.query(Users).filter(Users.id == user_id).first()
+    user = session.query(Users.id, Users.name).filter(Users.id == user_id).first()
     return user
 
 '''def register_user_full_name(message):
