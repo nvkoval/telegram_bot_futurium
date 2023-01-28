@@ -5,7 +5,6 @@ from aiogram import Dispatcher, types
 async def set_main_menu(dp: Dispatcher):
     main_menu_commands = [
         types.BotCommand(command='/start', description='Почніть спілкування  з ботом'),
-        types.BotCommand(command='/help', description='Help for bot'),
         types.BotCommand(command='/contact', description='Contacts of Futurium English School'),
     ]
     await dp.bot.set_my_commands(main_menu_commands)

@@ -21,7 +21,7 @@ async def unknown_text(message: Message):
 
 
 def register_contact_command(dp: Dispatcher):
-    dp.register_message_handler(contact_command, commands='contact')
+    dp.register_message_handler(contact_command, commands="contact")
 
 
 def register_unknown_text(dp: Dispatcher):

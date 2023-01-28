@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, Integer, String
+from sqlalchemy import Column, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from tg_bot.db.database import engine
 
@@ -11,9 +11,8 @@ class Users(Base):
     username = Column(String)
     name = Column(String)
     # phone = Column(String)
-    # user_status_id = Column(Integer)
-    admin = Column(Boolean, default=False)
-    # student = Column(Boolean, default=None)
+    # user_status = Column(String)
+    # is_admin = Column(Boolean, default=False)
 
 
 # class UserStatus(Base):
