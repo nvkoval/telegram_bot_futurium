@@ -16,6 +16,7 @@ class TgBot:
     admin_ids: list[int]
     use_redis: bool
 
+
 @dataclass
 class Miscellaneous:
     other_params: str = None
@@ -46,4 +47,3 @@ def load_config(path: str = None):
         ),
         misc=Miscellaneous()
     )
-

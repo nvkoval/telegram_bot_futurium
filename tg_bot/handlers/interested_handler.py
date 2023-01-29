@@ -3,12 +3,15 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import ContentType, Message, ReplyKeyboardRemove
 
 from tg_bot.keyboards.inline import futurium_tg_kb
-from tg_bot.keyboards.reply import create_reply_kb, finish_rkb_interested, phone_rkb, want_trial_more_rkb
+from tg_bot.keyboards.reply import create_reply_kb, finish_rkb_interested
+from tg_bot.keyboards.reply import phone_rkb, want_trial_more_rkb
+from tg_bot.misc.gsheets import save_phone, save_user_status
 from tg_bot.misc.states import Users
 from tg_bot.texts.texts import TEXTS
-from tg_bot.misc.gsheets import save_phone, save_user_status
 
-# Hendler for answer if this is a people, who interested in styding
+
+
+# Handler for answer if this is a people, who interested in styding
 async def interested_start(message: Message, state: FSMContext):
     save_user_status(message, 5)
     keyboard = create_reply_kb(1, "format_education", "price", "english_level")

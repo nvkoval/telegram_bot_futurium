@@ -1,7 +1,6 @@
 from aiogram import Dispatcher
-from aiogram.types import (Message, ContentType,
-                           InlineKeyboardMarkup, InlineKeyboardButton)
-from tg_bot.keyboards.inline import create_inline_kb
+from aiogram.types import Message, ContentType
+from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from tg_bot.texts.texts import TEXTS
 
 

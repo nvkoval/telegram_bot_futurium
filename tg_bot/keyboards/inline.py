@@ -30,7 +30,7 @@ finish_kb_interested = create_inline_kb(1,
 
 futurium_tg_kb = InlineKeyboardMarkup()
 button_futurium_tg = InlineKeyboardButton(text=TEXTS["text_link"],
-                                      url=TEXTS["link"])
+                                          url=TEXTS["link"])
 futurium_tg_kb.add(button_futurium_tg)
 
 review_kb = InlineKeyboardMarkup()

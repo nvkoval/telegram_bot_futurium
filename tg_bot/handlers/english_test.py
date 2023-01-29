@@ -13,15 +13,17 @@ from tg_bot.misc.states import Users
 
 questions = load(open("questions.json", "r", encoding="utf-8"))
 
-#help variables
+# help variables
 correct_answers = []
 user_info = []
 is_in_progress = False
 
+
 # Handler на кнопку english test
-async def start_eng_test (message: Message, state: FSMContext):
+async def start_eng_test(message: Message, state: FSMContext):
     await message.answer(TEXTS["test_hello"], parse_mode="MarkdownV2")
     await state.set_state(Users.Testing.state)
+
 
 # Handler for checking test answers.
 async def answer_handler(callback: CallbackQuery, state: FSMContext):
@@ -32,7 +34,7 @@ async def answer_handler(callback: CallbackQuery, state: FSMContext):
     (callback.from_user.id)
     if is_correct:
         correct_answers.append(q)
-    if q +1 > len(questions) - 1:
+    if q + 1 > len(questions) - 1:
         await callback.message.delete()
         keyboard = create_reply_kb(1, "want_more")
         await callback.message.answer(
@@ -43,9 +45,7 @@ async def answer_handler(callback: CallbackQuery, state: FSMContext):
         await state.set_state(Users.Interested.state)
 
         user = [
-            callback.from_user.first_name,
-            callback.from_user.last_name,
-            callback.from_user.username,
+            callback.from_user.id,
             len(correct_answers)
             ]
 
@@ -68,9 +68,10 @@ async def go_handler(message: Message, state: FSMContext):
                              reply_markup=compose_markup_for_test(0),
                              parse_mode="MarkdownV2")
 
+
 # quiting test
 async def quit_handler(message: Message, state: FSMContext):
-    if is_in_progress == False:
+    if is_in_progress is False:
         await message.answer("❗️Ви ще *не почали тест*\\.",
                              parse_mode="MarkdownV2")
         return

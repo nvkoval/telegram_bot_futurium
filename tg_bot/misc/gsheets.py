@@ -1,11 +1,13 @@
 import gspread
 from aiogram.types import Message
 from gspread import Worksheet
-from tg_bot.models.models import Users
+
 
 # Authentication to interact with the Google Drive API
 gc = gspread.service_account("tgbot_futurium.json")
 sheet = gc.open("Futurium_price")
+
+
 worksheet_num = sheet.worksheet("num_classes")
 worksheet_users = sheet.worksheet("users_from_bot")
 worksheet_price = sheet.worksheet("price")
@@ -24,11 +26,13 @@ def next_available_row(worksheet: Worksheet):
     return str(len(str_list)+1)
 
 
-def save_user(user: Users):
+def save_user(message: Message):
+    username = message.from_user.username if message.from_user.username else None
+    id = message.from_user.id
     next_row = next_available_row(worksheet_users)
-    if str(user.id) not in worksheet_users.col_values(1):
-        worksheet_users.update_cell(next_row, 1, user.id)
-        worksheet_users.update_cell(next_row, 2, user.name)
+    if str(message.from_user.id) not in worksheet_users.col_values(1):
+        worksheet_users.update_cell(next_row, 1, id)
+        worksheet_users.update_cell(next_row, 2, username)
     return
 
 
@@ -61,12 +65,13 @@ def save_phone(message: Message, col: int):
         worksheet_users.update_cell(cell.row, col, message.contact["phone_number"])
     return
 
+
 # Adding result of test to table
 def adding_info_spreadsheet(user):
     rows = worksheet_test.get_all_values()
     counter = 1
     for row in rows:
-        counter +=1
+        counter += 1
     worksheet_test.update_cell(counter, 1, user[0])
     worksheet_test.update_cell(counter, 2, user[1])
     worksheet_test.update_cell(counter, 3, user[2])

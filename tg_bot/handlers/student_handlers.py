@@ -4,12 +4,13 @@ from aiogram.types import Message
 
 from tg_bot.keyboards.inline import futurium_tg_kb, review_kb
 from tg_bot.keyboards.reply import create_reply_kb, finish_rkb_student
+from tg_bot.misc.gsheets import worksheet_num, num_class_left, get_price
+from tg_bot.misc.gsheets import save_message, save_user_status
 from tg_bot.misc.states import Users
 from tg_bot.texts.texts import TEXTS
-from tg_bot.misc.gsheets import worksheet_num, num_class_left, save_message, get_price, save_user_status
 
 
-# Hendler for answer if this is a student
+# Handler for answer if this is a student
 async def student_start(message: Message, state: FSMContext):
     save_user_status(message, 5)
     keyboard = create_reply_kb(1, "review", "want_pay", "want_num_lesson")
@@ -17,10 +18,11 @@ async def student_start(message: Message, state: FSMContext):
     await state.set_state(Users.Student.state)
 
 
-# Hendler for enter name
+# Handler for enter name
 async def student_enter_name(message: Message, state: FSMContext):
-    await message.answer(TEXTS["enter_name"]) # , parse_mode="HTML"
+    await message.answer(TEXTS["enter_name"], parse_mode="HTML")
     await state.set_state(Users.Student_name.state)
+
 
 # Handler for incorrect name
 async def warning_not_name(message: Message):
@@ -48,13 +50,14 @@ async def student_lessons_left(message: Message, state: FSMContext):
         await message.answer(text=TEXTS["no_name"])
         await message.answer(TEXTS["enter_name"], parse_mode="HTML")
 
-# Hendler for later pay
+
+# Handler for later pay
 async def student_pay_later_thanks(message: Message, state: FSMContext):
     await message.answer(TEXTS["good"])
     await message.answer(TEXTS["finish"], reply_markup=finish_rkb_student)
 
 
-# Hendler for pay in advance
+# Handler for pay in advance
 async def student_pay_in_advance(message: Message, state: FSMContext):
     await message.answer(TEXTS["payment"], reply_markup=futurium_tg_kb)
     await message.answer(TEXTS["thanks_after_pay"])
@@ -91,7 +94,7 @@ async def want_pay_group_hn(message: Message, state: FSMContext):
     await message.answer(TEXTS["finish"], reply_markup=finish_rkb_student)
 
 
-# Hendler for review
+# Handler for review
 async def student_send_review(message: Message, state: FSMContext):
     await message.answer(TEXTS["review_fill"], reply_markup=review_kb)
     await message.answer(TEXTS["review_thanks"])

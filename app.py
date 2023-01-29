@@ -2,7 +2,6 @@ import asyncio
 import logging
 
 from aiogram import Bot, Dispatcher
-
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage2
 
@@ -18,16 +17,6 @@ from tg_bot.keyboards.menu_button import set_main_menu
 
 
 logger = logging.getLogger(__name__)
-
-
-def register_all_middlewares(dp, config):
-    # dp.setup_middleware(EnvironmentMiddleware(config=config))
-    pass
-
-
-def register_all_filters(dp):
-    # dp.filters_factory.bind(AdminFilter)
-    pass
 
 
 def register_all_handlers(dp):
@@ -52,13 +41,10 @@ async def main():
     storage = RedisStorage2() if config.tg_bot.use_redis else MemoryStorage()
     dp = Dispatcher(bot, storage=storage)
 
-
     await set_main_menu(dp)
 
     bot['config'] = config
 
-    register_all_middlewares(dp, config)
-    register_all_filters(dp)
     register_all_handlers(dp)
 
     try:
