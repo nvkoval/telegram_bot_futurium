@@ -1,0 +1,4 @@
+aiogram==2.24
+environs==9.5.0
+gspread==5.7.2
+redis==4.4.2
