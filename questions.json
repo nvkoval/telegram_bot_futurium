@@ -1,6 +1,6 @@
 [
     {
-        "text": "*\\[1/20\\]* How old are you\\?\\\n\n*A*\\. I have 24 years old\\.\\\n*B*\\. I have 24 years\\.\\\n*C*\\. I am fine\\.\\\n*D*\\. I am 24 years old\\.",
+        "text": "<b>[1/20]</b> How old are you?\n\n<b>A</b>. I have 24 years old.\n<b>B</b>. I have 24 years.\n<b>C</b>. I am fine.\n<b>D</b>. I am 24 years old.",
         "correct_answer": 4,
         "variants": [
             "A",
@@ -10,7 +10,7 @@
         ]
     },
     {
-        "text": "*\\[2/20\\]* Justin Bieber went to work\\.\\.\\. \\\n\n*A*\\. with car\\.\\\n*B*\\. by car\\.\\\n*C*\\. on car\\.\\\n*D*\\. in car\\.",
+        "text": "<b>[2/20]</b> Justin Bieber went to work... \n\n<b>A</b>. with car.\n<b>B</b>. by car.\n<b>C</b>. on car.\n<b>D</b>. in car.",
         "correct_answer": 2,
         "variants": [
             "A",
@@ -20,7 +20,7 @@
         ]
     },
     {
-        "text": "*\\[3/20\\]* Hailey is \\.\\.\\.\\.\\. Justin to get up now\\.\\\n\n*A*\\. telling\\\n*B*\\. sayings\\\n*C*\\. saying to\\\n*D*\\. telling to",
+        "text": "<b>[3/20]</b> Hailey is ..... Justin to get up now.\n\n<b>A</b>. telling\n<b>B</b>. sayings\n<b>C</b>. saying to\n<b>D</b>. telling to",
         "correct_answer": 1,
         "variants": [
             "A",
@@ -30,7 +30,7 @@
         ]
     },
     {
-        "text": "*\\[4/20\\]* We haven't got \\.\\.\\.\\.\\. money\\.\\\n\n*A*\\. a lot\\\n*B*\\. some\\\n*C*\\. any\\\n*D*\\. many",
+        "text": "<b>[4/20]</b> We haven't got ..... money.\n\n<b>A</b>. a lot\n<b>B</b>. some\n<b>C</b>. any\n<b>D</b>. many",
         "correct_answer": 3,
         "variants": [
             "A",
@@ -40,7 +40,7 @@
         ]
     },
     {
-        "text": "*\\[5/20\\]*  Choose the right sentence\\:\\\n\n*A*\\. He like going to the movies\\.\\\n*B*\\. He likes going to the movies\\.\\\n*C*\\. He liked go to the movies\\.\\\n*D*\\. He like the movies\\.",
+        "text": "<b>[5/20]</b>  Choose the right sentence:\n\n<b>A</b>. He like going to the movies.\n<b>B</b>. He likes going to the movies.\n<b>C</b>. He liked go to the movies.\n<b>D</b>. He like the movies.",
         "correct_answer": 2,
         "variants": [
             "A",
@@ -50,7 +50,7 @@
         ]
     },
     {
-        "text": "*\\[6/20\\]*   \\.\\.\\.\\. some more coffee\\?\\\n\n*A*\\. Do you\\?\\\n*B*\\. Do you like\\?\\\n*C*\\. You'd like\\\n*D*\\. Would you like\\?",
+        "text": "<b>[6/20]</b>  .... some more coffee?\n\n<b>A</b>. Do you?\n<b>B</b>. Do you like?\n<b>C</b>. You'd like\n<b>D</b>. Would you like?",
         "correct_answer": 4,
         "variants": [
             "A",
@@ -60,7 +60,7 @@
         ]
     },
     {
-        "text": "*\\[7/20\\]* He plays tennis \\.\\.\\.\\.\\.\\\n\n*A*\\. on Wednesdays\\.\\\n*B*\\. in Wednesdays\\.\\\n*C*\\. at Wednesdays\\.\\\n*D*\\. by Wednesdays\\.",
+        "text": "<b>[7/20]</b> He plays tennis .....\n\n<b>A</b>. on Wednesdays.\n<b>B</b>. in Wednesdays.\n<b>C</b>. at Wednesdays.\n<b>D</b>. by Wednesdays.",
         "correct_answer": 1,
         "variants": [
             "A",
@@ -70,7 +70,7 @@
         ]
     },
     {
-        "text": "*\\[8/20\\]* He \\.\\.\\.\\.\\. never been to the USA\\.\\\n\n*A*\\. does\\\n*B*\\. has\\\n*C*\\. haven't\\\n*D*\\. hadn't",
+        "text": "<b>[8/20]</b> He ..... never been to the USA.\n\n<b>A</b>. does\n<b>B</b>. has\n<b>C</b>. haven't\n<b>D</b>. hadn't",
         "correct_answer": 2,
         "variants": [
             "A",
@@ -80,7 +80,7 @@
         ]
     },
     {
-        "text": "*\\[9/20\\]* When she arrived, he\\.\\.\\.\\.\\.\\\n\n*A*\\. already left\\.\\\n*B*\\. has already left\\.\\\n*C*\\. had already left\\.\\\n*D*\\. left\\.",
+        "text": "<b>[9/20]</b> When she arrived, he .....\n\n<b>A</b>. already left.\n<b>B</b>. has already left.\n<b>C</b>. had already left.\n<b>D</b>. left.",
         "correct_answer": 3,
         "variants": [
             "A",
@@ -90,7 +90,7 @@
         ]
     },
     {
-        "text": "*\\[10/20\\]*  By the time you finish the work I \\.\\.\\.\\.\\.\\\n\n*A*\\. will have left\\.\\\n*B*\\. leave\\.\\\n*C*\\. going to leave\\.\\\n*D*\\. would left\\.",
+        "text": "<b>[10/20]</b>  By the time you finish the work I .....\n\n<b>A</b>. will have left.\n<b>B</b>. leave.\n<b>C</b>. going to leave.\n<b>D</b>. would left.",
         "correct_answer": 1,
         "variants": [
             "A",
@@ -100,7 +100,7 @@
         ]
     },
     {
-        "text": "*\\[11/20\\]* The room can't be dirty she\\.\\.\\.\\.\\.\\\n\n*A*\\. is just clean it\\.\\\n*B*\\. have just cleaned it\\.\\\n*C*\\. just clean it\\.\\\n*D*\\. has just cleaned it\\.",
+        "text": "<b>[11/20]</b> The room can't be dirty she .....\n\n<b>A</b>. is just clean it.\n<b>B</b>. have just cleaned it.\n<b>C</b>. just clean it.\n<b>D</b>. has just cleaned it.",
         "correct_answer": 4,
         "variants": [
             "A",
@@ -110,7 +110,7 @@
         ]
     },
     {
-        "text": "*\\[12/20\\]* Have you sent that letter to Mr\\. Taylor\\? Yes\\, I've \\.\\.\\.\\.\\. done that\\.\\\n\n*A*\\. still\\\n*B*\\. yet\\\n*C*\\. already\\\n*D*\\. now",
+        "text": "<b>[12/20]</b> Have you sent that letter to Mr. Taylor? Yes, I've ..... done that.\n\n<b>A</b>. still\n<b>B</b>. yet\n<b>C</b>. already\n<b>D</b>. now",
         "correct_answer": 3,
         "variants": [
             "A",
@@ -120,7 +120,7 @@
         ]
     },
     {
-        "text": "*\\[13/20\\]* This is the girl \\.\\.\\.\\.\\. I met on Thursday\\.\\\n\n*A*\\. whom\\\n*B*\\. which\\\n*C*\\. what\\\n*D*\\. \\-\\-\\-\\-\\-",
+        "text": "<b>[13/20]</b> This is the girl ..... I met on Thursday.\n\n<b>A</b>. whom\n<b>B</b>. which\n<b>C</b>. what\n<b>D</b>. -----",
         "correct_answer": 1,
         "variants": [
             "A",
@@ -130,7 +130,7 @@
         ]
     },
     {
-        "text": "*\\[14/20\\]* You can watch TV \\.\\.\\.\\.\\. you like\\.\\\n\n*A*\\. whenever\\\n*B*\\. soon\\\n*C*\\. always\\\n*D*\\. whatever",
+        "text": "<b>[14/20]</b> You can watch TV ..... you like.\n\n<b>A</b>. whenever\n<b>B</b>. soon\n<b>C</b>. always\n<b>D</b>. whatever",
         "correct_answer": 1,
         "variants": [
             "A",
@@ -140,7 +140,7 @@
         ]
     },
     {
-        "text": "*\\[15/20\\]*  She \\.\\.\\.\\.\\. go to school yesterday\\.\\\n\n*A*\\. must\\\n*B*\\. had to\\\n*C*\\. ought to\\\n*D*\\. should have",
+        "text": "<b>[15/20]</b>  She ..... go to school yesterday.\n\n<b>A</b>. must\n<b>B</b>. had to\n<b>C</b>. ought to\n<b>D</b>. should have",
         "correct_answer": 2,
         "variants": [
             "A",
@@ -150,7 +150,7 @@
         ]
     },
     {
-        "text": "*\\[16/20\\]*  Carl’s very \\.\\.\\.\\.\\.\\.\\. He’s never late\\, and he never forgets to do things\\.\\\n\n*A*\\. reliable\\\n*B*\\. patient\\\n*C*\\. strict\\\n*D*\\. thrilled",
+        "text": "<b>[16/20]</b>  Carl’s very ....... He’s never late, and he never forgets to do things.\n\n<b>A</b>. reliable\n<b>B</b>. patient\n<b>C</b>. strict\n<b>D</b>. thrilled",
         "correct_answer": 1,
         "variants": [
             "A",
@@ -160,7 +160,7 @@
         ]
     },
     {
-        "text": "*\\[17/20\\]* The government plans to \\.\\.\\.\\.\\.\\. taxes on sales of luxury items\\.\\\n\n*A*\\. increase\\\n*B*\\. expand\\\n*C*\\. go up\\\n*D*\\. skip",
+        "text": "<b>[17/20]</b> The government plans to ...... taxes on sales of luxury items.\n\n<b>A</b>. increase\n<b>B</b>. expand\n<b>C</b>. go up\n<b>D</b>. skip",
         "correct_answer": 1,
         "variants": [
             "A",
@@ -170,7 +170,7 @@
         ]
     },
     {
-        "text": "*\\[18/20\\]* Mandy works for a computer software company\\. She got \\.\\.\\.\\.\\.\\. recently\\, and so now she’s an area manager\\.\\\n\n*A*\\. made redundant \\\n*B*\\. sacked\\\n*C*\\. a raise \\\n*D*\\. promoted",
+        "text": "<b>[18/20]</b> Mandy works for a computer software company. She got ...... recently, and so now she’s an area manager.\n\n<b>A</b>. made redundant \n<b>B</b>. sacked\n<b>C</b>. a raise \n<b>D</b>. promoted",
         "correct_answer": 4,
         "variants": [
             "A",
@@ -180,7 +180,7 @@
         ]
     },
     {
-        "text": "*\\[19/20\\]*  Photographers and designers need to be very \\.\\.\\.\\.\\.\\.\\.\\\n\n*A*\\. creative\\\n*B*\\. fit\\\n*C*\\. annoying\\\n*D*\\. focused",
+        "text": "<b>[19/20]</b> Photographers and designers need to be very .......\n\n<b>A</b>. creative\n<b>B</b>. fit\n<b>C</b>. annoying\n<b>D</b>. focused",
         "correct_answer": 1,
         "variants": [
             "A",
@@ -190,7 +190,7 @@
         ]
     },
     {
-        "text": "*\\[20/20\\]*  I’ve been working here \\.\\.\\.\\.\\.\\.\\. about the last two years\\.\\\n\n*A*\\. during\\\n*B*\\. for\\\n*C*\\. since\\\n*D*\\. in",
+        "text": "<b>[20/20]</b>  I’ve been working here ....... about the last two years.\n\n<b>A</b>. during\n<b>B</b>. for\n<b>C</b>. since\n<b>D</b>. in",
         "correct_answer": 2,
         "variants": [
             "A",

@@ -1,4 +1,5 @@
-aiogram==2.24
-environs==9.5.0
-gspread==5.7.2
-redis==4.4.2
+aiogram==3.2.0
+environs==10.0.0
+gspread-asyncio==1.9.0
+redis==5.0.1
+flake8==6.1.0

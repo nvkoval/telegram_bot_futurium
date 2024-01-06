@@ -1,17 +1,21 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.utils.keyboard import ReplyKeyboardBuilder
+
 from tg_bot.texts.texts import TEXTS
 
 
-def create_reply_kb(row_width: int, *args) -> ReplyKeyboardMarkup:
-    reply_kb = ReplyKeyboardMarkup(resize_keyboard=True,
-                                   one_time_keyboard=True,
-                                   row_width=row_width)
+def create_reply_kb(width: int, *args: str) -> ReplyKeyboardMarkup:
+    reply_kb_builder = ReplyKeyboardBuilder()
+    buttons: list[KeyboardButton] = []
+
     for button in args:
-        reply_kb.insert(KeyboardButton(text=TEXTS[button]))
-    return reply_kb
+        buttons.append(
+            KeyboardButton(text=TEXTS[button] if button in TEXTS else button)
+        )
 
-
-want_trial_more_rkb = create_reply_kb(1, "want_trial", "want_more")
+    reply_kb_builder.row(*buttons, width=width)
+    return reply_kb_builder.as_markup(resize_keyboard=True,
+                                      one_time_keyboard=True)
 
 
 finish_rkb_student = create_reply_kb(1,
@@ -19,14 +23,12 @@ finish_rkb_student = create_reply_kb(1,
                                      "want_pay",
                                      "want_num_lesson")
 
-finish_rkb_interested = create_reply_kb(1,
-                                        "english_level",
-                                        "format_education",
-                                        "price")
 
-
-phone_rkb = ReplyKeyboardMarkup(row_width=1,
-                                resize_keyboard=True,
-                                one_time_keyboard=True)
-phone_button = KeyboardButton(text=TEXTS["phone"], request_contact=True, callback_data="thanks")
-phone_rkb.add(phone_button)
+phone_button = KeyboardButton(text=TEXTS["phone"],
+                              request_contact=True,
+                              callback_data="thanks")
+phone_rkb = ReplyKeyboardMarkup(
+    keyboard=[[phone_button]],
+    resize_keyboard=True,
+    one_time_keyboard=True
+)

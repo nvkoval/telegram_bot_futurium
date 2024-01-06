@@ -2,56 +2,50 @@ import asyncio
 import logging
 
 from aiogram import Bot, Dispatcher
-from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.contrib.fsm_storage.redis import RedisStorage2
-
-from tg_bot.handlers.other_handlers import (register_contact_command,
-                                            register_unknown_text)
-from tg_bot.handlers.user_start import register_cmd_start
-from tg_bot.handlers.interested_handler import register_interested_person
-from tg_bot.handlers.student_handlers import register_student
-from tg_bot.handlers.english_test import register_eng_level_test
+from aiogram.fsm.storage.memory import MemoryStorage
+from aiogram.fsm.storage.redis import RedisStorage, Redis
 
 from tg_bot.config import load_config
-from tg_bot.keyboards.menu_button import set_main_menu
+from tg_bot.handlers import router_list
+from tg_bot.misc.set_menu import set_main_menu
+from tg_bot.middlewares.config import ConfigMiddleware
 
 
-logger = logging.getLogger(__name__)
+def setup_logging():
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(filename)s:%(lineno)d #%(levelname)-8s [%(asctime)s] - %(name)s - %(message)s",
+    )
+    logger = logging.getLogger(__name__)
+    logger.info("Starting bot")
 
 
-def register_all_handlers(dp):
-    register_cmd_start(dp)
-    register_contact_command(dp)
-    register_student(dp)
-    register_interested_person(dp)
-    register_eng_level_test(dp)
-    register_unknown_text(dp)
+def register_global_middlewares(dp: Dispatcher, config):
+    dp.message.outer_middleware(ConfigMiddleware(config))
+    dp.callback_query.outer_middleware(ConfigMiddleware(config))
 
 
 async def main():
-    logging.basicConfig(
-        level=logging.INFO,
-        format=u'%(filename)s:%(lineno)d #%(levelname)-8s [%(asctime)s] - %(name)s - %(message)s',
-    )
+    setup_logging()
 
     config = load_config(".env")
 
+    redis = Redis(host='localhost')
+    storage = RedisStorage(redis) if config.tg_bot.use_redis else MemoryStorage()
+
     bot = Bot(token=config.tg_bot.token, parse_mode="HTML")
+    dp = Dispatcher(storage=storage)
 
-    storage = RedisStorage2() if config.tg_bot.use_redis else MemoryStorage()
-    dp = Dispatcher(bot, storage=storage)
+    dp.include_routers(*router_list)
 
-    await set_main_menu(dp)
+    register_global_middlewares(dp, config)
 
-    bot['config'] = config
-
-    register_all_handlers(dp)
+    await set_main_menu(bot)
 
     try:
-        await dp.start_polling()
+        await dp.start_polling(bot)
     finally:
         await dp.storage.close()
-        await dp.storage.wait_closed()
         await bot.session.close()
 
 
@@ -59,4 +53,4 @@ if __name__ == '__main__':
     try:
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
-        logger.error("Bot stopped!")
+        logging.error("Bot stopped!")

@@ -1,99 +1,96 @@
-from aiogram import Dispatcher
-from aiogram.dispatcher import FSMContext
-from aiogram.types import CallbackQuery
-from aiogram.types import Message
-from json import loads
-from json import load
+from aiogram import Router
+from aiogram.fsm.context import FSMContext
+from aiogram.filters.command import Command
+from aiogram.types import CallbackQuery, Message
+from datetime import datetime
+from json import load, loads
 
-from tg_bot.keyboards.inline import compose_markup_for_test
+from tg_bot.config import Config
+from tg_bot.keyboards.inline import compose_keyboard_for_test
 from tg_bot.keyboards.reply import create_reply_kb
 from tg_bot.texts.texts import TEXTS
-from tg_bot.misc.gsheets import adding_info_spreadsheet
+from tg_bot.misc.gsheets import GoogleForm_test_result, adding_info_to_sheet, open_worksheet
 from tg_bot.misc.states import Users
 
-questions = load(open("questions.json", "r", encoding="utf-8"))
+with open("questions.json", "r", encoding="utf-8") as f:
+    questions = load(f)
 
-# help variables
+test_router = Router()
+
 correct_answers = []
 user_info = []
-is_in_progress = False
 
 
-# Handler на кнопку english test
-async def start_eng_test(message: Message, state: FSMContext):
-    await message.answer(TEXTS["test_hello"], parse_mode="MarkdownV2")
-    await state.set_state(Users.Testing.state)
+# starting test
+@test_router.message(Users.Testing, Command("test"))
+async def start_test(message: Message, state: FSMContext):
+    await message.answer(questions[0]["text"],
+                         reply_markup=compose_keyboard_for_test(questions, 0))
+    await state.set_state(Users.Testing_in_progress)
+
+
+# starting test
+@test_router.message(Users.Testing_in_progress, Command("test"))
+async def start_test_in_progress(message: Message):
+    await message.answer(TEXTS["test_already_start"])
 
 
 # Handler for checking test answers.
-async def answer_handler(callback: CallbackQuery, state: FSMContext):
+@test_router.callback_query(Users.Testing_in_progress, lambda c: True)
+async def answer_handler(callback: CallbackQuery, state: FSMContext, config: Config):
     data = loads(callback.data)
-    is_in_progress = True
     q = data["question"]
     is_correct = questions[q]["correct_answer"] - 1 == data["answer"]
-    (callback.from_user.id)
+
     if is_correct:
         correct_answers.append(q)
+
     if q + 1 > len(questions) - 1:
         await callback.message.delete()
         keyboard = create_reply_kb(1, "want_more")
         await callback.message.answer(
-            f"Ви пройшли тестування\\! \n✅ Правильних відповідей\\: *{len(correct_answers)} з {len(questions)}*\\.",
-            reply_markup=keyboard,
-            parse_mode="MarkdownV2"
+            f'{TEXTS["after_test"]}<b>{len(correct_answers)} з {len(questions)}</b>.',
+            reply_markup=keyboard
         )
         await state.set_state(Users.Interested.state)
 
-        user = [
-            callback.from_user.id,
-            len(correct_answers)
-            ]
+        date_time = datetime.now()
+        date = date_time.date().strftime('%d.%m.%Y')
+        time = date_time.time().strftime('%H:%M')
+        date_time = f"{date} {time}"
 
-        adding_info_spreadsheet(user)
+        test_result = GoogleForm_test_result(
+            first_name=callback.from_user.first_name,
+            last_name=callback.from_user.last_name,
+            username=callback.from_user.username,
+            correct_answers=len(correct_answers),
+            date=date_time
+        )
+
+        google_client_manager = config.misc.google_client_manager
+        sheet_name = config.misc.sheet_name
+        worksheet_name = config.misc.worksheet_test
+
+        worksheet_test = await open_worksheet(google_client_manager,
+                                              sheet_name, worksheet_name)
+        await adding_info_to_sheet(worksheet_test, test_result)
         return
 
-    await callback.message.edit_text(questions[q + 1]["text"],
-                                     reply_markup=compose_markup_for_test(q + 1),
-                                     parse_mode="MarkdownV2")
-
-
-# starting test
-async def go_handler(message: Message, state: FSMContext):
-    if is_in_progress:
-        await message.answer("🚫 Ви не можете почати тест, тому що *ви вже його проходите*\\.",
-                             parse_mode="MarkdownV2")
-        return
-    else:
-        await message.answer(questions[0]["text"],
-                             reply_markup=compose_markup_for_test(0),
-                             parse_mode="MarkdownV2")
+    await callback.message.edit_text(
+        questions[q + 1]["text"],
+        reply_markup=compose_keyboard_for_test(questions, q + 1))
 
 
 # quiting test
-async def quit_handler(message: Message, state: FSMContext):
-    if is_in_progress is False:
-        await message.answer("❗️Ви ще *не почали тест*\\.",
-                             parse_mode="MarkdownV2")
-        return
+@test_router.message(Users.Testing, Command("finish"))
+async def finish_test(message: Message):
+    await message.answer(TEXTS["test_not_start"])
+
+
+# quiting test
+@test_router.message(Users.Testing_in_progress, Command("finish"))
+async def finish_test_in_progress(message: Message, state: FSMContext):
     keyboard = create_reply_kb(1, "want_more")
-    await message.answer("✅ Ви *закінчили тест*\\.",
-                         parse_mode="MarkdownV2", reply_markup=keyboard)
+    await message.answer(TEXTS["the_end"],
+                         reply_markup=keyboard)
     await state.set_state(Users.Interested.state)
-
-
-def register_eng_level_test(dp: Dispatcher):
-    dp.register_message_handler(start_eng_test,
-                                text=TEXTS["english_level"],
-                                state="*")
-
-    dp.register_message_handler(go_handler,
-                                commands=["test"],
-                                state=Users.Testing)
-
-    dp.register_message_handler(quit_handler,
-                                commands=["finish"],
-                                state=Users.Testing)
-
-    dp.register_callback_query_handler(answer_handler,
-                                       lambda c: True,
-                                       state=Users.Testing)

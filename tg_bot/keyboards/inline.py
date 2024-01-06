@@ -1,21 +1,20 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from json import load
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 from json import dumps
 
 from tg_bot.texts.texts import TEXTS
 
 
-def create_inline_kb(row_width: int, *args, **kwargs) -> InlineKeyboardMarkup:
-    inline_kb = InlineKeyboardMarkup(row_width=row_width)
-    if args:
-        [inline_kb.insert(InlineKeyboardButton(
-                            text=TEXTS[button],
-                            callback_data=button)) for button in args]
-    if kwargs:
-        [inline_kb.insert(InlineKeyboardButton(
-                            text=text,
-                            callback_data=button)) for button, text in kwargs.items()]
-    return inline_kb
+def create_inline_kb(width: int, *args: str) -> InlineKeyboardMarkup:
+    inline_kb_builder = InlineKeyboardBuilder()
+    buttons: list[InlineKeyboardButton] = []
+
+    for button in args:
+        buttons.append(InlineKeyboardButton(
+                        text=TEXTS[button] if button in TEXTS else button,
+                        callback_data=button))
+    inline_kb_builder.row(*buttons, width=width)
+    return inline_kb_builder.as_markup()
 
 
 finish_kb_student = create_inline_kb(1,
@@ -28,33 +27,51 @@ finish_kb_interested = create_inline_kb(1,
                                         "format_education",
                                         "price")
 
-futurium_tg_kb = InlineKeyboardMarkup()
-button_futurium_tg = InlineKeyboardButton(text=TEXTS["text_link"],
-                                          url=TEXTS["link"])
-futurium_tg_kb.add(button_futurium_tg)
 
-review_kb = InlineKeyboardMarkup()
-button_review = InlineKeyboardButton(text=TEXTS["form_review_text"],
-                                     url=TEXTS["form_review_url"])
-review_kb.add(button_review)
+def create_inline_url_kb(text: str, url: str) -> InlineKeyboardMarkup:
+    button = [
+        [InlineKeyboardButton(text=text, url=url)]
+        ]
+    return InlineKeyboardMarkup(inline_keyboard=button)
 
 
-want_trial_more_kb = InlineKeyboardMarkup()
+futurium_tg_kb = create_inline_url_kb(
+    text=TEXTS["text_link"],
+    url=TEXTS["link"]
+)
+
+contact_url_kb = create_inline_url_kb(
+    text=TEXTS["contact_url"],
+    url=TEXTS["url"]
+)
+
+review_kb = create_inline_url_kb(
+    text=TEXTS["form_review_text"],
+    url=TEXTS["form_review_url"]
+)
+
+
 button_trial = InlineKeyboardButton(text=TEXTS["want_trial"],
                                     url=TEXTS["link"])
 button_more = InlineKeyboardButton(text=TEXTS["want_more"],
                                    callback_data="want_more")
-want_trial_more_kb.add(button_trial).add(button_more)
+want_trial_more_kb = InlineKeyboardMarkup(
+    inline_keyboard=[[button_trial],
+                     [button_more]]
+)
 
 
-def compose_markup_for_test(question: int):
-    questions = load(open("questions.json", "r", encoding="utf-8"))
-    km = InlineKeyboardMarkup(row_width=4)
+def compose_keyboard_for_test(questions: list, question: int) -> InlineKeyboardMarkup:
+    keyboard = InlineKeyboardBuilder()
+    buttons: list[InlineKeyboardButton] = []
+
     for i in range(len(questions[question]["variants"])):
         cd = {
             "question": question,
             "answer": i
         }
-        km.insert(InlineKeyboardButton(questions[question]["variants"][i],
-                                       callback_data=dumps(cd)))
-    return km
+        buttons.append(InlineKeyboardButton(
+                        text=questions[question]["variants"][i],
+                        callback_data=dumps(cd)))
+    keyboard.row(*buttons)
+    return keyboard.as_markup()
