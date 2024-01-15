@@ -1,7 +1,7 @@
 from aiogram import Bot
 from aiogram.types import BotCommand
 
-from tg_bot.texts.texts import TEXTS_MENU_COMMANDS
+from tg_bot.misc.texts import TEXTS_MENU_COMMANDS
 
 
 # Function for creating Menu button (the list of commands)

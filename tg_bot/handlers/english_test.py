@@ -8,7 +8,7 @@ from json import load, loads
 from tg_bot.config import Config
 from tg_bot.keyboards.inline import compose_keyboard_for_test
 from tg_bot.keyboards.reply import create_reply_kb
-from tg_bot.texts.texts import TEXTS
+from tg_bot.misc import texts
 from tg_bot.misc.gsheets import GoogleForm_test_result, adding_info_to_sheet, open_worksheet
 from tg_bot.misc.states import Users
 
@@ -32,7 +32,7 @@ async def start_test(message: Message, state: FSMContext):
 # starting test
 @test_router.message(Users.Testing_in_progress, Command("test"))
 async def start_test_in_progress(message: Message):
-    await message.answer(TEXTS["test_already_start"])
+    await message.answer(texts.TEST_ALREADY_START)
 
 
 # Handler for checking test answers.
@@ -47,17 +47,14 @@ async def answer_handler(callback: CallbackQuery, state: FSMContext, config: Con
 
     if q + 1 > len(questions) - 1:
         await callback.message.delete()
-        keyboard = create_reply_kb(1, "want_more")
+        keyboard = create_reply_kb(1, texts.WANT_MORE)
         await callback.message.answer(
-            f'{TEXTS["after_test"]}<b>{len(correct_answers)} з {len(questions)}</b>.',
+            f'{texts.AFTER_TEST}<b>{len(correct_answers)} з {len(questions)}</b>.',
             reply_markup=keyboard
         )
         await state.set_state(Users.Interested.state)
 
-        date_time = datetime.now()
-        date = date_time.date().strftime('%d.%m.%Y')
-        time = date_time.time().strftime('%H:%M')
-        date_time = f"{date} {time}"
+        date_time = datetime.now().strftime('%Y.%m.%d %H:%M')
 
         test_result = GoogleForm_test_result(
             first_name=callback.from_user.first_name,
@@ -84,13 +81,13 @@ async def answer_handler(callback: CallbackQuery, state: FSMContext, config: Con
 # quiting test
 @test_router.message(Users.Testing, Command("finish"))
 async def finish_test(message: Message):
-    await message.answer(TEXTS["test_not_start"])
+    await message.answer(texts.TEST_NOT_START)
 
 
 # quiting test
 @test_router.message(Users.Testing_in_progress, Command("finish"))
 async def finish_test_in_progress(message: Message, state: FSMContext):
-    keyboard = create_reply_kb(1, "want_more")
-    await message.answer(TEXTS["the_end"],
+    keyboard = create_reply_kb(1, texts.WANT_MORE)
+    await message.answer(texts.TEST_THE_END,
                          reply_markup=keyboard)
     await state.set_state(Users.Interested.state)

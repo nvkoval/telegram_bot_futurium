@@ -1,7 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
-from tg_bot.texts.texts import TEXTS
+from tg_bot.misc import texts
 
 
 def create_reply_kb(width: int, *args: str) -> ReplyKeyboardMarkup:
@@ -10,7 +10,7 @@ def create_reply_kb(width: int, *args: str) -> ReplyKeyboardMarkup:
 
     for button in args:
         buttons.append(
-            KeyboardButton(text=TEXTS[button] if button in TEXTS else button)
+            KeyboardButton(text=button)
         )
 
     reply_kb_builder.row(*buttons, width=width)
@@ -18,15 +18,9 @@ def create_reply_kb(width: int, *args: str) -> ReplyKeyboardMarkup:
                                       one_time_keyboard=True)
 
 
-finish_rkb_student = create_reply_kb(1,
-                                     "review",
-                                     "want_pay",
-                                     "want_num_lesson")
-
-
-phone_button = KeyboardButton(text=TEXTS["phone"],
+phone_button = KeyboardButton(text=texts.PHONE,
                               request_contact=True,
-                              callback_data="thanks")
+                              callback_data=texts.PHONE_THANKS)
 phone_rkb = ReplyKeyboardMarkup(
     keyboard=[[phone_button]],
     resize_keyboard=True,

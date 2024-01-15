@@ -8,7 +8,7 @@ from tg_bot.config import Config
 from tg_bot.keyboards.reply import create_reply_kb
 from tg_bot.misc.gsheets import open_worksheet, save_user, save_user_status
 from tg_bot.misc.states import Users
-from tg_bot.texts.texts import TEXTS
+from tg_bot.misc import texts
 
 start_router = Router()
 
@@ -22,12 +22,12 @@ async def cmd_start(message: Message, config: Config):
     worksheet_users = await open_worksheet(google_client_manager,
                                            sheet_name, worksheet_name)
     await save_user(message, worksheet_users)
-    keyboard = create_reply_kb(2, "student", "interested")
-    await message.answer(TEXTS['hello'], reply_markup=keyboard)
+    keyboard = create_reply_kb(2, texts.STUDENT, texts.INTERESTED)
+    await message.answer(texts.HELLO, reply_markup=keyboard)
 
 
 # Handler for answer if this is a people, who interested in styding
-@start_router.message(F.text == TEXTS["interested"])
+@start_router.message(F.text == texts.INTERESTED)
 async def interested_start(message: Message, state: FSMContext, config: Config):
     google_client_manager = config.misc.google_client_manager
     sheet_name = config.misc.sheet_name
@@ -35,13 +35,14 @@ async def interested_start(message: Message, state: FSMContext, config: Config):
     worksheet_users = await open_worksheet(google_client_manager,
                                            sheet_name, worksheet_name)
     await save_user_status(message, 5, worksheet_users)
-    keyboard = create_reply_kb(1, "format_education", "price", "english_level")
-    await message.answer(text=TEXTS["interested_q1"], reply_markup=keyboard)
+    keyboard = create_reply_kb(1, texts.FORMAT_EDUCATION,
+                               texts.PRICE, texts.ENGLISH_LEVEL)
+    await message.answer(text=texts.INTERESTED_Q1, reply_markup=keyboard)
     await state.set_state(Users.Interested.state)
 
 
 # Handler for answer if this is a student
-@start_router.message(F.text == TEXTS["student"])
+@start_router.message(F.text == texts.STUDENT)
 async def student_start(message: Message, state: FSMContext, config: Config):
     google_client_manager = config.misc.google_client_manager
     sheet_name = config.misc.sheet_name
@@ -49,6 +50,6 @@ async def student_start(message: Message, state: FSMContext, config: Config):
     worksheet_users = await open_worksheet(google_client_manager,
                                            sheet_name, worksheet_name)
     await save_user_status(message, 5, worksheet_users)
-    keyboard = create_reply_kb(1, "review", "want_pay", "want_num_lesson")
-    await message.answer(TEXTS["student_q1"], reply_markup=keyboard)
+    keyboard = create_reply_kb(1, texts.REVIEW, texts.WANT_PAY, texts.WANT_NUM_LESSONS)
+    await message.answer(texts.STUDENT_Q1, reply_markup=keyboard)
     await state.set_state(Users.Student.state)
