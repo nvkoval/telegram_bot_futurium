@@ -9,7 +9,7 @@ from tg_bot.config import Config
 from tg_bot.keyboards.inline import compose_keyboard_for_test
 from tg_bot.keyboards.reply import create_reply_kb
 from tg_bot.misc import texts
-from tg_bot.misc.gsheets import GoogleForm_test_result, adding_info_to_sheet, open_worksheet
+from tg_bot.misc.gsheets import open_worksheet
 from tg_bot.misc.states import Users
 
 with open("questions.json", "r", encoding="utf-8") as f:
@@ -54,15 +54,13 @@ async def answer_handler(callback: CallbackQuery, state: FSMContext, config: Con
         )
         await state.set_state(Users.Interested.state)
 
-        date_time = datetime.now().strftime('%Y.%m.%d %H:%M')
-
-        test_result = GoogleForm_test_result(
-            first_name=callback.from_user.first_name,
-            last_name=callback.from_user.last_name,
-            username=callback.from_user.username,
-            correct_answers=len(correct_answers),
-            date=date_time
-        )
+        test_result = {
+            "first_name": callback.from_user.first_name,
+            "last_name": callback.from_user.last_name,
+            "username": callback.from_user.username,
+            "correct_answers": len(correct_answers),
+            "date": datetime.now().strftime('%Y.%m.%d %H:%M')
+        }
 
         google_client_manager = config.misc.google_client_manager
         sheet_name = config.misc.sheet_name
@@ -70,7 +68,7 @@ async def answer_handler(callback: CallbackQuery, state: FSMContext, config: Con
 
         worksheet_test = await open_worksheet(google_client_manager,
                                               sheet_name, worksheet_name)
-        await adding_info_to_sheet(worksheet_test, test_result)
+        await worksheet_test.append_row(list(test_result.values()))
         return
 
     await callback.message.edit_text(

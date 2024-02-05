@@ -5,9 +5,10 @@ from aiogram.types import FSInputFile, Message
 from tg_bot.config import Config
 from tg_bot.keyboards.inline import futurium_tg_kb
 from tg_bot.keyboards.reply import create_reply_kb, phone_rkb
+from tg_bot.misc import texts
 from tg_bot.misc.gsheets import open_worksheet, save_phone
 from tg_bot.misc.states import Users
-from tg_bot.misc import texts
+
 
 interested_router = Router()
 interested_router.message.filter(Users.Interested)
@@ -21,7 +22,7 @@ want_trial_more_rkb = create_reply_kb(1, texts.WANT_TRIAL, texts.WANT_MORE)
 
 @interested_router.message(F.text == texts.PRICE)
 async def price_photo(message: Message):
-    image_price = FSInputFile('price.jpg')
+    image_price = FSInputFile("price.jpg")
     await message.answer_photo(image_price)
     await message.answer(texts.FINISH,
                          reply_markup=finish_rkb_interested)
@@ -60,7 +61,7 @@ async def phone_thanks(message: Message, config: Config):
     worksheet_users = config.misc.worksheet_users
     worksheet_users = await open_worksheet(google_client_manager,
                                            sheet_name, worksheet_users)
-    await save_phone(message, 4, worksheet_users)
+    await save_phone(message, 6, worksheet_users)
     await message.answer(texts.PHONE_THANKS, reply_markup=finish_rkb_interested)
 
 

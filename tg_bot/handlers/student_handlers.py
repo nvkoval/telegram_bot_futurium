@@ -1,13 +1,15 @@
 from aiogram import Router, F
+from aiogram.filters import Command
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from tg_bot.config import Config
 from tg_bot.keyboards.inline import create_inline_url_kb, futurium_tg_kb
 from tg_bot.keyboards.reply import create_reply_kb
+from tg_bot.misc import texts
 from tg_bot.misc.gsheets import open_worksheet, num_class_left, get_price, save_message
 from tg_bot.misc.states import Users
-from tg_bot.misc import texts
+
 
 student_router = Router()
 student_router.message.filter(Users.Student)
@@ -15,8 +17,7 @@ student_router.message.filter(Users.Student)
 student_name_router = Router()
 student_name_router.message.filter(Users.Student_name)
 
-finish_rkb_student = create_reply_kb(1,
-                                     texts.REVIEW,
+finish_rkb_student = create_reply_kb(1, texts.REVIEW,
                                      texts.WANT_PAY,
                                      texts.WANT_NUM_LESSONS)
 
@@ -29,7 +30,7 @@ async def student_enter_name(message: Message, state: FSMContext):
 
 
 # Handler for correct name and get a number of lessons
-@student_name_router.message(F.text.regexp(r'[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ]+\s+[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ]'))
+@student_name_router.message(F.text.regexp(r"[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ]+\s+[а-щА-ЩЬьЮюЯяЇїІіЄєҐґ]"))
 async def student_lessons_left(message: Message, state: FSMContext, config: Config):
     name = message.text
     google_client_manager = config.misc.google_client_manager
@@ -42,15 +43,15 @@ async def student_lessons_left(message: Message, state: FSMContext, config: Conf
         worksheet_users = config.misc.worksheet_users
         worksheet_users = await open_worksheet(google_client_manager,
                                                sheet_name, worksheet_users)
-        await save_message(message, 3, worksheet_users)
+        await save_message(message, 5, worksheet_users)
 
         class_left = int(await num_class_left(name, worksheet_num))
         keyboard = create_reply_kb(1, texts.YES, texts.LATER)
         if class_left >= 0:
-            text = f'{texts.LEFT_CLASS_START}{class_left}{texts.LEFT_CLASS_PAID}'
+            text = f"{texts.LEFT_CLASS_START}{class_left}{texts.LEFT_CLASS_PAID}"
             await message.answer(text=text, reply_markup=keyboard)
         else:
-            text = f'{texts.LEFT_CLASS_START}{abs(class_left)}{texts.LEFT_CLASS_NO_PAID}'
+            text = f"{texts.LEFT_CLASS_START}{abs(class_left)}{texts.LEFT_CLASS_NO_PAID}"
             await message.answer(f"{text}\n{texts.PAYMENT}", reply_markup=futurium_tg_kb)
             await message.answer(texts.THANKS_AFTER_PAY, reply_markup=finish_rkb_student)
         await state.set_state(Users.Student.state)
@@ -60,7 +61,7 @@ async def student_lessons_left(message: Message, state: FSMContext, config: Conf
 
 
 # Handler for incorrect name
-@student_name_router.message()
+@student_name_router.message(~Command(commands="cancel"))
 async def warning_not_name(message: Message):
     await message.answer(text=texts.ENTER_NAME_ERROR)
 

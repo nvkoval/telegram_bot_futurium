@@ -13,5 +13,5 @@ class ConfigMiddleware(BaseMiddleware):
             event: Message,
             data: Dict[str, Any]
     ):
-        data['config'] = self.config
+        data["config"] = self.config
         return await handler(event, data)
